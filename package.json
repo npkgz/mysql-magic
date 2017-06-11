@@ -6,7 +6,7 @@
   "homepage": "https://github.com/AndiDittrich/Node.mysql-magic",
   "bugs": "https://github.com/AndiDittrich/Node.mysql-magic/issues",
   "repository": "AndiDittrich/Node.mysql-magic",
-  "description": "Promised based mysql library extension",
+  "description": "Promised based, high-level mysql library extension",
   "keywords": [
     "mysql",
     "mariadb",

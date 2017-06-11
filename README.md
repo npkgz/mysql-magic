@@ -12,7 +12,7 @@ yarn add mysql-magic --save
 Features
 ------------------------------
 
-* **BETA RELEASE** DO NOT USE IT IN PRODUCTION
+* **BETA RELEASE DO NOT USE IT IN PRODUCTION**
 * Supports multiple named connection pools (different database settings with global scope)
 * High-level API 
 * Designed to run with the pure power of native `Promise`, `await` and `async function`
