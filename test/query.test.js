@@ -15,22 +15,16 @@ describe('query', function(){
         });
     });
 
-     it('should throw an exepction in case the file is not available (ENOENT)', async function(){
+     it('should execute a query', async function(){
         
         // get pool
         const pool = _db.getPool('userdb');
 
-        console.log(pool);
-
         // retreive connection
         const con = await pool.getConnection();
 
-        console.log(con);
-
         // run query
         const [result, fields] = await con.query('SELECT * FROM log LIMIT 20;');
-
-        console.log(fields);
 
         con.release();
 
