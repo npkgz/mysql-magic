@@ -14,6 +14,7 @@ Features
 
 * **BETA RELEASE DO NOT USE IT IN PRODUCTION**
 * Supports multiple named connection pools (different database settings with global scope)
+* Safe connection scopes - execute querys with build-in error handling
 * High-level API 
 * Designed to run with the pure power of native `Promise`, `await` and `async function`
 
@@ -49,6 +50,24 @@ const [result, fields] = await con.query('SELECT * FROM `users` LIMIT 10;');
 
 // release connection
 await con.release();
+```
+
+**Run Querys within scope**
+
+Within a connection scope, the connection will be automatically closed on finish or in case of an error.
+
+```js
+const _db = require('mysql-magic');
+
+// retrieve connection scope
+const result = await _db.getConnection('userdb', async function(){
+    // run query
+    const [rows, fields] = await this.query('SELECT * FROM log LIMIT 20;');
+
+    return rows.length;
+});
+
+console.log(result);
 ```
 
 API
@@ -116,7 +135,9 @@ mysql-magic::Pool::getConnection
 
 **Description:** Requests a connection from given pool
 
-**Syntax:** `const connection:Object = Pool::getConnection()`
+**Syntax:** `const connection:Object = Pool::getConnection([scope:function])`
+
+**Example 1**
 
 ```js
 // get the userdb pool
@@ -128,6 +149,21 @@ const con = await _db.getConnection();
 // do something
 ...
 ```
+
+**Example 2 - Scopes**
+```js
+const _db = require('mysql-magic');
+
+// retrieve connection scope
+const result = await _db.getConnection('userdb', async function(){
+    // run query
+    const [rows, fields] = await this.query('SELECT * FROM log LIMIT 20;');
+    return rows.length;
+});
+
+console.log(result);
+```
+
 
 mysql-magic::Connection::release
 ------------------------------

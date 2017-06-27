@@ -15,7 +15,7 @@ describe('query', function(){
         });
     });
 
-     it('should execute a query', async function(){
+     it('should execute a query with 20 results', async function(){
         
         // get pool
         const pool = _db.getPool('userdb');
@@ -28,6 +28,20 @@ describe('query', function(){
 
         con.release();
 
+        _assert.equal(result.length, 20);
+    });
+
+    it('should execute a query with 20 results within connection scope', async function(){
+        
+        // retrieve connection scope
+        const result = await _db.getConnection('userdb', async function(){
+            // run query
+            const [rows, fields] = await this.query('SELECT * FROM log LIMIT 20;');
+
+            return rows.length;
+        });
+
+        _assert.equal(result, 20);
     });
 
 });
