@@ -31,7 +31,7 @@ describe('query', function(){
         _assert.equal(result.length, 20);
     });
 
-    it('should execute a query with 20 results within connection scope', async function(){
+    it('should execute a query with 1 result within connection scope', async function(){
         
         // retrieve connection scope
         const result = await _db.getConnection('userdb', async function(){
