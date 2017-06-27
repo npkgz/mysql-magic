@@ -36,12 +36,12 @@ describe('query', function(){
         // retrieve connection scope
         const result = await _db.getConnection('userdb', async function(){
             // run query
-            const [rows, fields] = await this.query('SELECT * FROM users LIMIT 20;');
+            const [rows, fields] = await this.query('SELECT COUNT(*) as num FROM users;');
 
-            return rows.length;
+            return rows[0].num;
         });
 
-        _assert.equal(result, 20);
+        _assert.equal(result, 100);
     });
 
 });

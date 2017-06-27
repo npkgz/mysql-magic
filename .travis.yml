@@ -6,4 +6,4 @@ node_js:
 services:
   - mysql
 before_install:
-  - mysql -e < test/travis.sql
+  - mysql < test/travis.sql
