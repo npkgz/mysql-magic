@@ -11,7 +11,7 @@ describe('query', function(){
             host     : 'localhost',
             user     : 'dev',
             password : 'dev',
-            database : 'ulogd2'
+            database : 'demo'
         });
     });
 
@@ -24,7 +24,7 @@ describe('query', function(){
         const con = await pool.getConnection();
 
         // run query
-        const [result, fields] = await con.query('SELECT * FROM log LIMIT 20;');
+        const [result, fields] = await con.query('SELECT * FROM users LIMIT 20;');
 
         con.release();
 
@@ -36,7 +36,7 @@ describe('query', function(){
         // retrieve connection scope
         const result = await _db.getConnection('userdb', async function(){
             // run query
-            const [rows, fields] = await this.query('SELECT * FROM log LIMIT 20;');
+            const [rows, fields] = await this.query('SELECT * FROM users LIMIT 20;');
 
             return rows.length;
         });
