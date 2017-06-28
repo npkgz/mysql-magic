@@ -27,7 +27,7 @@ Usage
 ```js
 const _mysqlMagic = require('mysql-magic');
 
-// somewhere during your applications bootstrap...initialize a custom pool
+// somewhere during your applications bootstrap...initialize a custom pool. It consumes any pool-options of [mysqljs](https://github.com/mysqljs/mysql)
 _mysqlMagic.initPool('userdb', {
     host     : 'localhost',
     user     : 'me',
@@ -54,20 +54,20 @@ await con.release();
 
 **Run Querys within scope**
 
-Within a connection scope, the connection will be automatically closed on finish or in case of an error.
+Within a connection scope, the connection will be automatically closed on finish or in case of an error. All kind of errors are proxied as exception.
 
 ```js
 const _db = require('mysql-magic');
 
 // retrieve connection scope
-const result = await _db.getConnection('userdb', async function(){
+const numUsers = await _db.getConnection('userdb', async function(){
     // run query
-    const [rows, fields] = await this.query('SELECT * FROM log LIMIT 20;');
+    const [rows, fields] = await this.query('SELECT COUNT(*) as `count` FROM `users`;');
 
-    return rows.length;
+    return rows.count;
 });
 
-console.log(result);
+console.log(numUsers);
 ```
 
 API
