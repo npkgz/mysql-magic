@@ -1,6 +1,6 @@
 [![Build Status](https://travis-ci.org/AndiDittrich/Node.mysql-magic.svg?branch=master)](https://travis-ci.org/AndiDittrich/Node.mysql-magic)
 
-mysql-magic BETA
+mysql-magic
 =========================
 
 Promised based, high-level [mysql library](https://github.com/mysqljs/mysql) extension for Node.js **>=7.6**.
@@ -12,9 +12,8 @@ yarn add mysql-magic --save
 Features
 ------------------------------
 
-* **BETA RELEASE DO NOT USE IT IN PRODUCTION**
 * Supports multiple named connection pools (different database settings with global scope)
-* Safe connection scopes - execute querys with build-in error handling
+* Safe async connection scopes - execute querys with build-in error handling
 * High-level API 
 * Designed to run with the pure power of native `Promise`, `await` and `async function`
 
@@ -75,6 +74,7 @@ API
 
 * initPool
 * getPool
+* getConnection()
 * Pool::getConnection
 * Connection::release
 * Connection::query
@@ -130,12 +130,59 @@ const con = await _db.getConnection();
 ...
 ```
 
+mysql-magic::getConnection
+------------------------------
+
+**Description:** Retrieves a connection using async connection scope
+
+**Syntax:** `const result:Object = getConnection([name:String], scope:async-function)`
+
+**Notice:** A connection scope will automatically call `con.release()` in the end or on an error - exceptions are forwarded
+
+**Example 1 - Named Pool**
+
+```js
+// just include the module
+const _db = require('mysql-magic');
+
+// retrieve connection scope using userdb
+const numUsers = await _db.getConnection('userdb', async function(){
+    // run query
+    const [rows, fields] = await this.query('SELECT COUNT(*) as num FROM users;');
+
+    return rows[0].num;
+});
+
+console.log(numUsers);
+...
+```
+
+**Example 2 - Default Pool**
+
+```js
+// just include the module
+const _db = require('mysql-magic');
+
+// retrieve connection scope using default pool
+const numUsers = await _db.getConnection(async function(){
+    // run query
+    const [rows, fields] = await this.query('SELECT COUNT(*) as num FROM users;');
+
+    return rows[0].num;
+});
+
+console.log(numUsers);
+...
+```
+
 mysql-magic::Pool::getConnection
 ------------------------------
 
 **Description:** Requests a connection from given pool
 
-**Syntax:** `const connection:Object = Pool::getConnection([scope:function])`
+**Syntax:** `const connection:Object = Pool::getConnection([scope:async-function])`
+
+**Notice:** A connection scope will automatically call `con.release()` in the end or on an error - exceptions are forwarded
 
 **Example 1**
 

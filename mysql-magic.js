@@ -6,9 +6,16 @@ const _api = {};
 _api.initPool = _poolManager.initPool;
 _api.getPool = _poolManager.getPool;
 
-// retrieve a connection by pool name
-_api.getConnection = function(poolname, scope){
-    return _poolManager.getPool(poolname).getConnection(scope);
+// retrieve a connection scope
+// default-pool: getConnection(scope)
+// explicit-pool: getConnection(poolname, scope)
+_api.getConnection = function(arg0, arg1=null){
+    // second agument set ?
+    if (arg1 === null){
+        return _poolManager.getPool().getConnection(arg0);
+    }else{
+        return _poolManager.getPool(arg0).getConnection(arg1);
+    }    
 };
 
 // expose api

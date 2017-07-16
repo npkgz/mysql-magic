@@ -13,6 +13,14 @@ describe('query', function(){
             password : 'dev',
             database : 'demo'
         });
+
+        // default pool
+        _db.initPool(null, {
+            host     : 'localhost',
+            user     : 'dev',
+            password : 'dev',
+            database : 'demo'
+        });
     });
 
      it('should execute a query with 20 results', async function(){
@@ -35,6 +43,19 @@ describe('query', function(){
         
         // retrieve connection scope
         const result = await _db.getConnection('userdb', async function(){
+            // run query
+            const [rows, fields] = await this.query('SELECT COUNT(*) as num FROM users;');
+
+            return rows[0].num;
+        });
+
+        _assert.equal(result, 100);
+    });
+
+    it('should execute a query within connection scope using default pool', async function(){
+        
+        // retrieve connection scope
+        const result = await _db.getConnection(async function(){
             // run query
             const [rows, fields] = await this.query('SELECT COUNT(*) as num FROM users;');
 
